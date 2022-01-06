@@ -1,4 +1,5 @@
-pipeline{
+def app
+pipeline {
     agent any
 
     tools {
@@ -7,8 +8,6 @@ pipeline{
     }
 
     stages {
-
-        def app
         
         stage('Checkout SCM') {
             steps {
