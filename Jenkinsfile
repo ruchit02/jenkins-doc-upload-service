@@ -1,33 +1,33 @@
-pipeline{
-    agent any{
+pipeline {
+    agent any {
         
         def app
     
-        tools{
+        tools {
             maven 'maven-3-on-docker-cont'
         }
-        stages{
+        stages {
 
-            stage('Checkout SCM'){
-                steps{
+            stage('Checkout SCM') {
+                steps {
 
                     git branch: 'main', url: 'https://github.com/ruchit02/jenkins-doc-upload-service.git'
                     echo 'Repository has been cloned into the current workspace'
                 }
             }
 
-            stage('Create a JAR file of the source code'){
-                steps{
+            stage('Create a JAR file of the source code') {
+                steps {
 
                     sh 'mvn clean package'
                     echo 'JAR file created successfully'
                 }
             }
 
-            stage('Build the docker image using the dockerfile in the root folder'){
-                steps{
+            stage('Build the docker image using the dockerfile in the root folder') {
+                steps {
 
-                    step{
+                    step {
                         app = docker.build("t0pn0tch/photo-image")
                     }
 
@@ -35,8 +35,8 @@ pipeline{
                 }
             }
 
-            stage('Push docker image to dockerhub'){
-                steps{
+            stage('Push docker image to dockerhub') {
+                steps {
 
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-topnotch') {
                         app.push("latest")
@@ -46,8 +46,8 @@ pipeline{
                 }
             }
 
-            stage('Deploy Pod in local kubernetes cluster'){
-                steps{
+            stage('Deploy Pod in local kubernetes cluster') {
+                steps {
 
                     withKubeConfig([credentialsId: 'minikube-kubeconfig-file', serverUrl: 'https://192.168.99.102:8443']) {
 
@@ -60,8 +60,8 @@ pipeline{
                 }
             }
 
-            stage('Send Notification'){
-                steps{
+            stage('Send Notification') {
+                steps {
 
                     mail bcc: '',
                          body: 'Hey! Someone just deployed a pod in your kubernetes cluster through jenkins! Kindly checkout whether its an authorized user',
