@@ -2,12 +2,6 @@ FROM openjdk:8-jdk-alpine
 
 WORKDIR /app
 
-COPY .mvn/ .mvn
+COPY ./target/photography-gateway-1-0.0.1-SNAPSHOT.jar ./
 
-COPY mvnw pom.xml ./
-
-RUN chmod +x ./mvnw && ./mvnw dependency:go-offline
-
-COPY src ./src
-
-CMD ["./mvnw","spring-boot:run"]
+CMD ["java","-jar","photography-gateway-1-0.0.1-SNAPSHOT.jar"]
