@@ -7,7 +7,7 @@ pipeline{
         
         def app
         
-        stage('Checkout SCM')"{
+        stage('Checkout SCM'){
             steps{
                 
                 git branch: 'main', url: 'https://github.com/ruchit02/jenkins-doc-upload-service.git'
@@ -41,6 +41,12 @@ pipeline{
         stage('Deploy Pod in local kubernetes cluster'){
             steps{
                 
+                withKubeConfig([credentialsId: 'minikube-kubeconfig-file', serverUrl: 'https://192.168.99.102:8443']) {
+            
+                    sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.22.1/bin/linux/amd64/kubectl"'  
+                    sh 'chmod u+x ./kubectl'
+                    sh './kubectl apply -f doc-upload.yml'
+                }
             }
         }
     
