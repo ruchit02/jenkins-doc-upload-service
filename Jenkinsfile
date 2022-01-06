@@ -1,11 +1,11 @@
 pipeline{
     agent any
+    def app
+    
     tools{
-        maven 'Maven 3.8.4'
+        maven 'maven-3-on-docker-cont'
     }
     stages{
-        
-        def app
         
         stage('Checkout SCM'){
             steps{
@@ -26,7 +26,10 @@ pipeline{
         stage('Build the docker image using the dockerfile in the root folder'){
             steps{
                 
-                app = docker.build("t0pn0tch/photo-image")
+                step{
+                    app = docker.build("t0pn0tch/photo-image")
+                }
+                
                 echo 'docker image built successfully'
             }
         }
