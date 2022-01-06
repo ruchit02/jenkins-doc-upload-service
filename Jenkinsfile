@@ -6,10 +6,10 @@ pipeline{
         maven 'maven-3-on-docker-cont'
     }
 
-    def app
-
     stages {
 
+        def app
+        
         stage('Checkout SCM') {
             steps {
 
@@ -29,7 +29,7 @@ pipeline{
         stage('Build the docker image using the dockerfile in the root folder') {
             steps {
 
-                step {
+                script {
                     app = docker.build("t0pn0tch/photo-image")
                 }
 
@@ -40,8 +40,10 @@ pipeline{
         stage('Push docker image to dockerhub') {
             steps {
 
-                docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-topnotch') {
-                    app.push("latest")
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-topnotch') {
+                        app.push("latest")
+                    }
                 }
 
                 echo 'Image successfully pushed to dockerhub'
