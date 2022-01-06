@@ -46,7 +46,14 @@ pipeline{
     
         stage('Send Notification'){
             steps{
-            
+                
+                mail bcc: '',
+                     body: 'Hey! Someone just deployed a pod in your kubernetes cluster through jenkins! Kindly checkout whether its an authorized user',
+                     cc: 'swethupaturu@gmail.com',
+                     from: '',
+                     replyTo: 'noreply@gmail.com',
+                     subject: 'Pod Deploy Notification',
+                     to: 'darjiruchit02@gmail.com'
             }
         }
     }
