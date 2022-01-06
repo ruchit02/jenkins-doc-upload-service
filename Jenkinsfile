@@ -1,6 +1,4 @@
-pipeline {
-    agent {
-        node {
+node {
             def app
 
             tools {
@@ -76,5 +74,3 @@ pipeline {
                 }
             }
         }
-    }
-}
