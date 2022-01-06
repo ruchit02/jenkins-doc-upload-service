@@ -19,6 +19,7 @@ pipeline{
             steps{
                 
                 sh 'mvn clean package'
+                echo 'JAR file created successfully'
             }
         }
     
@@ -26,6 +27,7 @@ pipeline{
             steps{
                 
                 app = docker.build("t0pn0tch/photo-image")
+                echo 'docker image built successfully'
             }
         }
     
@@ -35,6 +37,8 @@ pipeline{
                 docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-topnotch') {
                     app.push("latest")
                 }
+                
+                echo 'Image successfully pushed to dockerhub'
             }
         }
     
@@ -47,6 +51,8 @@ pipeline{
                     sh 'chmod u+x ./kubectl'
                     sh './kubectl apply -f doc-upload.yml'
                 }
+                
+                echo 'Pod successfully deployed in kubernetes cluster'
             }
         }
     
@@ -60,6 +66,8 @@ pipeline{
                      replyTo: 'noreply@gmail.com',
                      subject: 'Pod Deploy Notification',
                      to: 'darjiruchit02@gmail.com'
+                
+                echo 'Notification sent to respectful owners'
             }
         }
     }
